@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Code Bar Appsculpt - Gerador de Códigos</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #11243f;
+      --secondary: #f7f9fc;
+      --text: #333;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--secondary);
+      color: var(--text);
+    }
+    header {
+      background: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    header img {
+      height: 50px;
+      margin-right: 15px;
+    }
+    header h1 {
+      color: white;
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+    .field label {
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .field select,
+    .field input,
+    .field textarea {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      background: #fafafa;
+    }
+    textarea {
+      resize: vertical;
+      height: 120px;
+    }
+    button {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #ff914d;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 1000;
+      width: 90%;
+      max-width: 400px;
+      display: none;
+    }
+    .popup.show {
+      display: block;
+    }
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      display: none;
+    }
+    .overlay.show {
+      display: block;
+    }
+    .popup .field input {
+      width: 100%;
+    }
+    .popup-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    .popup-buttons button {
+      width: 48%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="img/Appsculpt (1000 x 250 px).png" alt="Logo Appsculpt">
+    <h1>Code Bar Appsculpt</h1>
+  </header>
+  <div class="container">
+    <h2>Gerador de Códigos de Barras em Lote</h2>
+    <div class="grid">
+      <div class="field">
+        <label for="tipo">Tipo de Código:</label>
+        <select id="tipo">
+          <option>CODE128</option>
+          <option>EAN13</option>
+          <option>UPC</option>
+          <option>Code 11</option>
+          <option>Code39</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="rotacao">Rotação:</label>
+        <select id="rotacao">
+          <option value="0">0°</option>
+          <option value="90">90°</option>
+          <option value="180">180°</option>
+          <option value="270">270°</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fonte">Fonte:</label>
+        <select id="fonte">
+          <option>Arial</option>
+          <option>Courier</option>
+          <option>Times</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="tamanhoFonte">Tamanho da Fonte (px):</label>
+        <input type="number" id="tamanhoFonte" value="11" min="6" max="36" />
+      </div>
+      <div class="field">
+        <label for="altura">Altura das Barras (px):</label>
+        <input type="number" id="altura" value="60" min="10" />
+      </div>
+      <div class="field">
+        <label for="tamanho">Largura da Barra (px):</label>
+        <input type="number" id="tamanho" value="2" min="1" />
+      </div>
+      <div class="field">
+        <label for="margem">Margem (px):</label>
+        <input type="number" id="margem" value="10" min="0" />
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:20px;">
+      <label for="valores">Valores (1 por linha):</label>
+      <textarea id="valores" placeholder="Digite cada valor em uma linha..."></textarea>
+    </div>
+
+    <button id="btnGerar">Gerar Código de barra</button>
+    <button onclick="abrirPopup()">Gerar Códigos Aleatórios</button>
+  </div>
+
+  <!-- Overlay e Popup -->
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <h3 style="margin-bottom: 15px;">Gerar Códigos Aleatórios</h3>
+    <div class="field">
+      <label>Quantidade de Códigos</label>
+      <input type="number" id="qtdCodigos" value="20" min="1">
+    </div>
+    <div class="field">
+      <label for="tipoAleatorio">Tipo de Código:</label>
+      <select id="tipoAleatorio">
+        <option value="EAN13">EAN-13</option>
+        <option value="UPC">UPC-A</option>
+        <option value="CODE128">Code 128</option>
+        <option value="Code39">Code 39</option>
+        <option value="Code11">Code 11</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Prefixo (opcional)</label>
+      <input type="text" id="prefixo">
+    </div>
+    <div class="field">
+      <label>Sufixo (opcional)</label>
+      <input type="text" id="sufixo">
+    </div>
+    <div class="popup-buttons">
+      <button onclick="gerarCodigosAleatorios()">Gerar</button>
+      <button onclick="fecharPopup()">Fechar</button>
+    </div>
+    <div class="field" style="margin-top:15px;">
+      <label>Códigos Gerados</label>
+      <textarea id="codigosGerados" readonly></textarea>
+      <button onclick="copiarParaArea()">Copiar para Área de Transferência</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('btnGerar').addEventListener('click', () => {
+      const raw = document.getElementById('valores').value;
+      const valores = raw.trim().split('\n').map(v => v.trim()).filter(v => v);
+      if (!valores.length) return alert('Digite ao menos um valor!');
+
+      const params = {
+        dados: JSON.stringify(valores),
+        tipo: document.getElementById('tipo').value,
+        rotacao: document.getElementById('rotacao').value,
+        fonte: document.getElementById('fonte').value,
+        tamanhoFonte: document.getElementById('tamanhoFonte').value,
+        altura: document.getElementById('altura').value,
+        tamanho: document.getElementById('tamanho').value,
+        margem: document.getElementById('margem').value
+      };
+      const qs = Object.entries(params)
+                       .map(([k,v]) => `${k}=${encodeURIComponent(v)}`)
+                       .join('&');
+      window.location.href = `codigos.html?${qs}`;
+    });
+
+    function abrirPopup() {
+      document.getElementById('popup').classList.add('show');
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    function fecharPopup() {
+      document.getElementById('popup').classList.remove('show');
+      document.getElementById('overlay').classList.remove('show');
+    }
+
+    function gerarCodigosAleatorios() {
+  const qtd = parseInt(document.getElementById('qtdCodigos').value);
+  const prefixo = document.getElementById('prefixo').value || '';
+  const sufixo = document.getElementById('sufixo').value || '';
+  const tipo = document.getElementById('tipoAleatorio').value;
+  const lista = [];
+
+  // Determina o comprimento base do código conforme o tipo
+  let comprimentoBase;
+  switch (tipo) {
+    case 'EAN13':
+      comprimentoBase = 13;
+      break;
+    case 'UPC':
+      comprimentoBase = 12;
+      break;
+    case 'CODE128':
+      comprimentoBase = 20; // Exemplo: 20 caracteres alfanuméricos
+      break;
+    case 'Code39':
+      comprimentoBase = 10; // Exemplo: 10 caracteres alfanuméricos
+      break;
+    case 'Code11':
+      comprimentoBase = 11;
+      break;
+    default:
+      comprimentoBase = 8;
+  }
+
+  for (let i = 0; i < qtd; i++) {
+    let parteAleatoria = '';
+    const comprimentoAleatorio = comprimentoBase - prefixo.length - sufixo.length;
+
+    if (tipo === 'EAN13' || tipo === 'UPC' || tipo === 'Code11') {
+      // Gera apenas dígitos numéricos
+      for (let j = 0; j < comprimentoAleatorio; j++) {
+        parteAleatoria += Math.floor(Math.random() * 10).toString();
+      }
+    } else if (tipo === 'CODE128' || tipo === 'Code39') {
+      // Gera caracteres alfanuméricos
+      const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      for (let j = 0; j < comprimentoAleatorio; j++) {
+        parteAleatoria += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+      }
+    }
+
+    lista.push(`${prefixo}${parteAleatoria}${sufixo}`);
+  }
+
+  const texto = lista.join('\n');
+  document.getElementById('codigosGerados').value = texto;
+  document.getElementById('valores').value = texto;
+}
+
+    function copiarParaArea() {
+      const txt = document.getElementById('codigosGerados');
+      txt.select();
+      document.execCommand('copy');
+      alert('Códigos copiados para a área de transferência!');
+    }
+  </script>
+</body>
+</html>

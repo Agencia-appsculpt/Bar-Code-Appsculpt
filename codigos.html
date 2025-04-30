@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Code Bar Appsculpt - Códigos Gerados</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #11243f;
+      --secondary: #f7f9fc;
+      --text: #333;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--secondary);
+      color: var(--text);
+    }
+    header {
+      background: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      flex-wrap: wrap;
+    }
+    header img {
+      height: 40px;
+      margin-right: 10px;
+    }
+    header h1 {
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 500;
+      flex-grow: 1;
+    }
+    .back-link {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-right: 15px;
+    }
+    .top-controls {
+      background: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      text-align: right;
+    }
+    .btn-imprimir {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff914d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-imprimir:hover {
+      background-color: #ca5810;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 500;
+      text-align: center;
+    }
+    #codigosContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    .codigo {
+      text-align: center;
+      max-width: 100%;
+    }
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .codigo p {
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    @media screen and (max-width: 600px) {
+      header h1 {
+        font-size: 1rem;
+      }
+      .btn-imprimir {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+      .container {
+        margin: 10px;
+        padding: 15px;
+      }
+    }
+
+    @media print {
+      header, .top-controls { display: none; }
+      .container { box-shadow: none; }
+      #codigosContainer { gap: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back-link">&larr; Voltar</a>
+    <img src="img/Appsculpt (1000 x 250 px).png" alt="Logo Appsculpt">
+    <h1>Code Bar Appsculpt</h1>
+  </header>
+
+  <div class="top-controls">
+    <button class="btn-imprimir" onclick="window.print()">Imprimir</button>
+  </div>
+
+  <div class="container">
+    <h2>Códigos de Barras Gerados</h2>
+    <div id="codigosContainer"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const valores  = JSON.parse(decodeURIComponent(params.get('dados')));
+    const tipo     = params.get('tipo')           || 'CODE128';
+    const rotacao  = parseInt(params.get('rotacao'))   || 0;
+    const fonte    = params.get('fonte')          || 'Arial';
+    const fontSize = parseInt(params.get('tamanhoFonte')) || 11;
+    const altura   = parseInt(params.get('altura'))     || 60;
+    const largura  = parseInt(params.get('tamanho'))    || 2;
+    const margem   = parseInt(params.get('margem'))     || 5;
+
+    const container = document.getElementById('codigosContainer');
+    valores.forEach((valor, i) => {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('codigo');
+      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.id = `barcode${i}`;
+      svg.setAttribute('width', `${largura * 100}px`);
+      svg.setAttribute('height', `${altura + fontSize + 10}px`);
+      const p = document.createElement('p');
+      p.textContent = valor;
+      p.style.fontFamily = fonte;
+      p.style.fontSize   = `${fontSize}px`;
+      wrapper.append(svg, p);
+      container.append(wrapper);
+      JsBarcode(svg, valor, {
+        format: tipo,
+        lineColor: '#000',
+        width: largura,
+        height: altura,
+        margin: margem,
+        font: fonte,
+        fontSize: fontSize,
+        displayValue: false,
+      });
+      if(rotacao) {
+        svg.style.transform = `rotate(${rotacao}deg)`;
+        svg.style.transformOrigin = 'center';
+      }
+    });
+  </script>
+</body>
+</html>

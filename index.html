@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Code Bar Appsculpt - Gerador de Códigos</title>
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
   <style>
@@ -35,24 +36,30 @@
       color: white;
       font-size: 1.6rem;
       font-weight: 500;
+      font-size: 1.2rem;
+      flex: 1;
+      text-align: center;
     }
     .container {
-      max-width: 900px;
-      margin: 30px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
+  max-width: 900px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  width: 90%;
+}
+
+
     h2 {
       margin-bottom: 20px;
       font-weight: 500;
       text-align: center;
     }
-    .grid {
+        .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
     }
     .field {
       display: flex;

@@ -136,6 +136,35 @@
     .popup-buttons button {
       width: 48%;
     }
+
+    #welcomePopup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1001;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+#welcomeOverlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+#welcomePopup.show,
+#welcomeOverlay.show {
+  display: block;
+}
+
   </style>
 </head>
 <body>
@@ -190,6 +219,16 @@
         <input type="number" id="margem" value="10" min="0" />
       </div>
     </div>
+          <!-- Popup de Boas-Vindas -->
+      <div class="overlay" id="welcomeOverlay"></div>
+      <div class="popup show" id="welcomePopup">
+        <h3>🎉 Bem-vindo ao Code Bar Appsculpt!</h3>
+        <p style="margin-top:10px; font-size: 0.95rem;">
+          Este site foi feito com carinho para ajudar você a gerar códigos de barras de forma <strong>rápida, prática e gratuita</strong>. <br><br>
+          Aproveite e compartilhe com outros empreendedores! 🚀
+        </p>
+        <button onclick="fecharBoasVindas()" style="margin-top: 15px;">Começar a Usar</button>
+      </div>
 
     <div class="field" style="margin-top:20px;">
       <label for="valores">Valores (1 por linha):</label>
@@ -236,8 +275,28 @@
       <button onclick="copiarParaArea()">Copiar para Área de Transferência</button>
     </div>
   </div>
+  <!-- Apoie o Desenvolvedor -->
+<div class="container" style="margin-top: 30px; text-align: center;">
+  <h2 style="margin-bottom: 10px;">💖 Apoie este Desenvolvedor</h2>
+  <p style="margin-bottom: 20px; font-size: 0.95rem;">
+    Se este gerador de código de barras está sendo útil para você, considere apoiar com qualquer valor via Pix 🙏
+  </p>
+  <img src="img/qrcode.png" alt="QR Code Pix" style="max-width: 200px; width: 100%; margin-bottom: 15px;" />
+  <p style="font-size: 0.9rem;"><strong>Chave Pix:</strong><br> fe19e3f1-9411-4268-8ef4-c48b5bf69f63</p>
+</div>
+
 
   <script>
+        window.addEventListener('load', () => {
+      document.getElementById('welcomePopup').classList.add('show');
+      document.getElementById('welcomeOverlay').classList.add('show');
+    });
+
+function fecharBoasVindas() {
+  document.getElementById('welcomePopup').classList.remove('show');
+  document.getElementById('welcomeOverlay').classList.remove('show');
+}
+
     document.getElementById('btnGerar').addEventListener('click', () => {
       const raw = document.getElementById('valores').value;
       const valores = raw.trim().split('\n').map(v => v.trim()).filter(v => v);

@@ -9,41 +9,52 @@
       --primary: #11243f;
       --secondary: #f7f9fc;
       --text: #333;
+      --primary-dark: #0e1f2c;
+      --accent: #ff914d;
+      --hover-accent: #ca5810;
     }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: var(--secondary);
       color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
     }
+
     header {
       background: var(--primary);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       display: flex;
       align-items: center;
       padding: 10px 20px;
       flex-wrap: wrap;
     }
+
     header img {
       height: 40px;
       margin-right: 10px;
     }
+
     header h1 {
       color: #fff;
       font-size: 1.3rem;
       font-weight: 500;
       flex-grow: 1;
     }
+
     .back-link {
       color: #fff;
       text-decoration: none;
       font-size: 0.9rem;
       margin-right: 15px;
     }
+
     .top-controls {
       background: #fff;
       padding: 10px 20px;
@@ -53,31 +64,38 @@
       z-index: 999;
       text-align: right;
     }
+
     .btn-imprimir {
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #ff914d;
+      background-color: var(--accent);
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
     }
+
     .btn-imprimir:hover {
-      background-color: #ca5810;
+      background-color: var(--hover-accent);
+      transform: scale(1.05);
     }
+
     .container {
       max-width: 900px;
       margin: 20px auto;
       background: #fff;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
+
     h2 {
       margin-bottom: 20px;
       font-weight: 500;
       text-align: center;
     }
+
     #codigosContainer {
       display: flex;
       flex-wrap: wrap;
@@ -85,14 +103,22 @@
       gap: 30px;
       margin-top: 20px;
     }
+
     .codigo {
       text-align: center;
       max-width: 100%;
+      transition: transform 0.3s;
     }
+
+    .codigo:hover {
+      transform: scale(1.05);
+    }
+
     svg {
       max-width: 100%;
       height: auto;
     }
+
     .codigo p {
       margin-top: 6px;
       font-size: 14px;
@@ -102,13 +128,21 @@
       header h1 {
         font-size: 1rem;
       }
+
       .btn-imprimir {
         font-size: 14px;
         padding: 8px 16px;
       }
+
       .container {
         margin: 10px;
         padding: 15px;
+      }
+    }
+
+    @media screen and (max-width: 1024px) {
+      header h1 {
+        font-size: 1.2rem;
       }
     }
 
@@ -117,11 +151,17 @@
       .container { box-shadow: none; }
       #codigosContainer { gap: 15px; }
     }
+
+    /* Dark mode */
+    body.dark-mode {
+      background: var(--primary-dark);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html" class="back-link">&larr; Voltar</a>
+    <a href="index.html" class="back-link" aria-label="Voltar para a página principal">← Voltar</a>
     <img src="img/Appsculpt (1000 x 250 px).png" alt="Logo Appsculpt">
     <h1>Code Bar Appsculpt</h1>
   </header>
@@ -175,6 +215,28 @@
         svg.style.transform = `rotate(${rotacao}deg)`;
         svg.style.transformOrigin = 'center';
       }
+    });
+
+    // Toggle Dark Mode
+    const toggleDarkMode = () => {
+      document.body.classList.toggle('dark-mode');
+    };
+
+    // Optionally, you can add a dark mode button or use media queries to detect user preferences
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeBtn = document.createElement('button');
+      darkModeBtn.textContent = 'Alternar para Modo Escuro';
+      darkModeBtn.style.position = 'fixed';
+      darkModeBtn.style.top = '20px';
+      darkModeBtn.style.right = '20px';
+      darkModeBtn.style.padding = '10px';
+      darkModeBtn.style.backgroundColor = '#333';
+      darkModeBtn.style.color = '#fff';
+      darkModeBtn.style.border = 'none';
+      darkModeBtn.style.borderRadius = '5px';
+      darkModeBtn.style.cursor = 'pointer';
+      darkModeBtn.onclick = toggleDarkMode;
+      document.body.appendChild(darkModeBtn);
     });
   </script>
 </body>

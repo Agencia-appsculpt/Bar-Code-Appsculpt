@@ -1,0 +1,252 @@
+:root {
+    --primary: #11243f;
+    --secondary: #f7f9fc;
+    --text: #333;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--secondary);
+    color: var(--text);
+  }
+  
+  header {
+    background: var(--primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  
+  header img {
+    height: 50px;
+    margin-right: 15px;
+  }
+  
+  header h1 {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    width: 90%;
+  }
+  
+  h2 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+  
+  .field {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .field label {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  .field select,
+  .field input,
+  .field textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background: #fafafa;
+  }
+  
+  textarea {
+    resize: vertical;
+    height: 120px;
+  }
+  
+  button {
+    width: 100%;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Suaviza a transição de cor e transformações */
+  }
+  
+  button:hover {
+    background: #ff914d; /* Cor de fundo mais escura ao passar o mouse */
+    transform: scale(1.05); /* Aumenta o tamanho do botão levemente ao passar o mouse */
+  }
+  
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+    display: none;
+    transition: opacity 0.3s, transform 0.3s; /* Anima a opacidade e a transformação do popup */
+    margin: auto; /* Centraliza o popup */
+  }
+  
+  .popup.show {
+    display: block;
+    opacity: 1;
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+  }
+  
+  .overlay.show {
+    display: block;
+    background: rgba(0, 0, 0, 0.5); /* Deixa o fundo com opacidade */
+  }
+  
+  .popup .field input {
+    width: 100%;
+  }
+  
+  .popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .popup-buttons button {
+    width: 48%;
+  }
+  
+  #welcomePopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  #welcomeOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  #welcomePopup.show,
+  #welcomeOverlay.show {
+    display: block;
+  }
+  
+  .container img {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media screen and (max-width: 600px) {
+    header h1 {
+      font-size: 1.4rem; /* Ajuste de tamanho de fonte em dispositivos móveis */
+    }
+  
+    .container {
+      padding: 10px; /* Ajusta o preenchimento para telas menores */
+    }
+  
+    .field {
+      margin-bottom: 15px; /* Reduz o espaçamento entre campos em dispositivos móveis */
+    }
+  
+    button {
+      font-size: 14px; /* Ajusta o tamanho da fonte nos botões */
+    }
+  }
+  
+  /* Estilo do Overlay de Carregamento */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Escurece a tela */
+    display: none; /* Inicialmente invisível */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999; /* Fica acima de todo o conteúdo */
+  }
+  
+  #loadingLogo {
+    animation: spin 1s cubic-bezier(0.75, 0.05, 0.15, 1.0) infinite; /* Rápido no início */
+    max-width: 150px; /* Ajuste o tamanho conforme necessário */
+    margin-bottom: 20px;
+  }
+
+  .loadingText {
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Animação de rotação com aceleração muito rápida no início */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  
+  
